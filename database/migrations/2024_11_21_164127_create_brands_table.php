@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('brand_name');
             $table->string('brand_image');
             $table->unsignedTinyInteger('rating')->default(1);
-            $table->string('country', 5);
+            $table->string('country', 2);
             $table->timestamps();
         });
     }
