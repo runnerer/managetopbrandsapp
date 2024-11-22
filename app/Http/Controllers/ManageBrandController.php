@@ -5,47 +5,47 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateBrandRequest;
 use App\Http\Requests\UpdateBrandRequest;
 use App\Models\Brand;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 
 class ManageBrandController extends Controller
 {
     /**
      * List all brands.
      */
-    public function index(): JsonResponse         
+    public function index()     
     {
         $brands = Brand::all();
 
-        return response()->json($brands, 200);
+        return view('manage_brands', compact('brands'));
     }
 
     /**
      * Create a new brand.
      */
-    public function store(CreateBrandRequest $request): JsonResponse
+    public function store(CreateBrandRequest $request)
     {
-        $brand = Brand::create($request->validated());
+        Brand::create($request->validated());
 
-        return response()->json($brand, 201);
+        return redirect()->route('brands.index')->with('success', 'Brand added successfully.');
     }
 
     /**
      * Update a brand.
      */
-    public function update(UpdateBrandRequest $request, Brand $brand): JsonResponse
+    public function update(string $brandId, UpdateBrandRequest $request): RedirectResponse
     {
-        $brand->update($request->validated());
+        Brand::find($brandId)->update($request->validated());
 
-        return response()->json($brand, 200);
+        return redirect()->route('brands.index')->with('success', 'Brand updated successfully.');
     }
 
     /**
      * Delete a brand.
      */
-    public function destroy(Brand $brand): JsonResponse
+    public function destroy(string $brandId): RedirectResponse
     {
-        $brand->delete();
+        Brand::destroy($brandId);
 
-        return response()->json(['message' => 'Brand deleted successfully'], 200);
+        return redirect()->route('brands.index')->with('success', 'Brand deleted successfully.');
     }
 }
