@@ -12,7 +12,7 @@ class CreateBrandRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -26,7 +26,7 @@ class CreateBrandRequest extends FormRequest
             'brand_name' => 'required|string|max:255',
             'brand_image' => 'required|url',
             'rating' => 'required|integer|min:1|max:5',
-            'country' => ['required', 'string', 'size:2', new IsoCountry],
+            'country' => ['required', 'string', 'size:2', 'uppercase', new IsoCountry],
         ];
     }
 }
